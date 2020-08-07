@@ -22,7 +22,29 @@
             filter: invert(1);
         }
 
+        & .menu__social-container {
+            filter: invert(1);
+        }
+
+        & .menu__social-item {
+            // filter: invert(1);
+        }
+
     }
+
+    &__social-container {
+        margin-top: auto;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-around;
+        transition: all 1s;
+
+    }
+
+    &__social-item {
+        height: 2.5rem;
+    }
+
     
     &__link {
         color: $color-grey-dark-1;
@@ -33,19 +55,24 @@
         font-weight: 500;
         margin: 0 auto;
         transition: all 1s;
+        border-bottom: 2px solid transparent;
 
         &:not(:first-child) {
             padding-top: 2rem;
         }
 
         &:hover {
-            // border-bottom: 1px solid $color-white;
+            border-bottom: 2px solid $color-black;
         }
     }
 
     &__logo {
         object-fit: cover;
         transition: all 1s;
+        width: 100%;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
 

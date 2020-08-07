@@ -821,6 +821,16 @@ body {
       color: #000; }
     .menu:hover .menu__logo {
       filter: invert(1); }
+    .menu:hover .menu__social-container {
+      filter: invert(1); }
+  .menu__social-container {
+    margin-top: auto;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-around;
+    transition: all 1s; }
+  .menu__social-item {
+    height: 2.5rem; }
   .menu__link {
     color: #777;
     text-decoration: none;
@@ -829,12 +839,19 @@ body {
     background-color: #fff;
     font-weight: 500;
     margin: 0 auto;
-    transition: all 1s; }
+    transition: all 1s;
+    border-bottom: 2px solid transparent; }
     .menu__link:not(:first-child) {
       padding-top: 2rem; }
+    .menu__link:hover {
+      border-bottom: 2px solid #000; }
   .menu__logo {
     object-fit: cover;
-    transition: all 1s; }
+    transition: all 1s;
+    width: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%); }
 
 .navigation__checkbox {
   display: none; }
