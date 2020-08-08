@@ -6,6 +6,12 @@ body {
     
 }
 
+.content {
+    min-height: 100%;
+    position: absolute;
+    left: 30vh;
+}
+
 .heading-primary {
     color: $color-black;
     text-transform: uppercase;

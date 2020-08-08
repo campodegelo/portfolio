@@ -42,12 +42,13 @@
     }
 
     &__social-item {
-        height: 2.5rem;
+        height: 2rem;
     }
 
     
     &__link {
         color: $color-grey-dark-1;
+        text-shadow: 1px 1px $color-grey-dark-1;
         text-decoration: none;
         font-size: 2rem;
         text-transform: uppercase;
@@ -69,7 +70,8 @@
     &__logo {
         object-fit: cover;
         transition: all 1s;
-        width: 100%;
+        width: 75%;
+        margin-bottom: 5vh;
         position: relative;
         left: 50%;
         transform: translateX(-50%);
