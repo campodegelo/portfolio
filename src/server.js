@@ -116,6 +116,12 @@ app.get('/changeLang', (req, res) => {
   })
 });
 
+// FETCH EXISTING PROJECTS
+app.get('/fetchProjects', (req, res) => {
+  console.log('fetching projects');
+  
+});
+
 server.listen(process.env.PORT || 8080, () => {
   console.log("Listening...");
 });
