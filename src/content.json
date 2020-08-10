@@ -1,0 +1,24 @@
+{
+    "menu": {
+        "en": {
+            "about": "About",
+            "contact": "Contact",
+            "publications": "Publications",
+            "projects": "Projects"
+        },
+        "pt": {
+            "about": "Sobre",
+            "contact": "Contato",
+            "publications": "Publicações",
+            "projects": "Projetos"
+        }
+    },
+    "about": {
+        "en": {
+            "title": "MSc Urban Design / Architecture in Karlsruhe Institut of Technologie - Germany. Architect licensed also in Brazil."
+        },
+        "pt": {
+            "title": "Mestre em Design Urbano / Arquiteta pelo Instituto de Tecnologia em Karlsruhe - Alemanha e também licenciada no Brasil."
+        }
+    }
+}

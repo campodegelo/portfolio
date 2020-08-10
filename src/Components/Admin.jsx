@@ -1,11 +1,20 @@
 import React from 'react';
+import {BrowserRouter, Route} from 'react-router-dom';
+import ProjectEditor from './ProjectEditor';
 
 const Admin = () => {
+    const path = window.location.pathname;
+    console.log('path = ', path);
     return (
-        
-        <div>
-            <h1>Admin Page</h1>
-        </div>
+        <BrowserRouter>
+            {/* <Route exact path='/admin/project' component={ProjectEditor}></Route> */}
+            <a href="/admin/newProject">Add Project</a>
+            <button>Change Project</button>
+            <button>Add Publication</button>
+            <button>Change Publication</button>
+            <button>Change About</button>
+            <button>Change Contact</button>
+        </BrowserRouter>
     )
 }
 

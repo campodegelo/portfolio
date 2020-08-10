@@ -9,7 +9,15 @@ body {
 .content {
     min-height: 100%;
     position: absolute;
-    left: 30vh;
+    left: 20%;
+    width: 80%;
+    padding: 5rem;
+
+    &__title {
+        position: absolute;
+        left: 40%;
+        transform: translateX(-50%);
+    }
 }
 
 .heading-primary {
@@ -17,11 +25,13 @@ body {
     text-transform: uppercase;
     backface-visibility: hidden;
     margin-bottom: 6rem;
-
+    // border: 1px solid $color-black;
+    // border-radius: 2px;
+    
     
     &--main {
         display: block;
-        font-size: 6rem;
+        font-size: 5rem;
         font-weight:  400;
         letter-spacing: 3.55rem;
         animation-name: moveInLeft;
@@ -30,6 +40,16 @@ body {
         /*animation-delay: 2s;
         animation-iteration-count: 3;
         */
+        
+        &--black {
+            color: $color-white;
+            background-color: $color-black;
+        }
+
+        &--white {
+            color: $color-black;
+            background-color: $color-white;
+        }
         
         @include respond(phone) {
             letter-spacing: 1rem;
@@ -43,6 +63,11 @@ body {
         font-weight:  700;
         letter-spacing: 1.75rem;
         animation: moveInRight 1s ease-out;
+        text-shadow: .5rem 1rem 2rem rgba($color-black, .5);
+        border: 1px solid $color-black;
+        // background-color: $color-primary-dark;
+        // color: $color-primary-light;
+        box-shadow: 0 1rem 1rem rgba($color-black, .5);
 
         @include respond(phone) {
             letter-spacing: .5rem;

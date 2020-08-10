@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 // const basicAuth = require("basic-auth");
+const cookieSession = require("cookie-session");
 const server = require("http").Server(app);
 const path = require("path");
 const compression = require("compression");
@@ -14,12 +15,12 @@ const s3 = require("./scripts/s3.js");
 const { s3Url } = require("./config");
 
 // HANDLING SECRETS
-// let secrets;
-// if (process.env.NODE_ENV === "production") {
-//   secrets = process.env; // in prod the secrets are environment variables
-// } else {
-//   secrets = require("../secret"); // in dev they are in secrets.json which is listed in .gitignore
-// }
+let secrets;
+if (process.env.NODE_ENV === "production") {
+  secrets = process.env; // in prod the secrets are environment variables
+} else {
+  secrets = require("./secret"); // in dev they are in secrets.json which is listed in .gitignore
+}
 
 // COMPRESSION MIDDLEWARE
 app.use(compression());
@@ -33,6 +34,13 @@ app.use(
     extended: false
   })
 );
+
+// COOKIES HANDLER
+const cookieSessionMiddleware = cookieSession({
+  secret: secrets.SESSION_SECRET,
+  maxAge: 1000 * 60 * 60 * 24 * 90
+});
+app.use(cookieSessionMiddleware);
 
 // SERVE JSON
 app.use(express.json());
@@ -70,26 +78,43 @@ axios.create({
 
 /************** Multer - DO NOT TOUCH *********************/
 
-/* HANDLING SECRETS */
-let secrets;
-if (process.env.NODE_ENV === "production") {
-    secrets = process.env; // in prod the secrets are environment variables
-} else {
-    secrets = require("./secret");
-}
-
 /***********************************************************************/
 // ROUTES
 // 
 // LOGIN
 app.post('/login', (req, res) => {
-    console.log('login route reached');
+  console.log('login route reached');
 
-    const {email, password} = req.body;
-    res.json({
-        success: (email === secrets.NAME && password === secrets.PASS)
-    })
+  const {email, password} = req.body;
+  res.json({
+      success: (email === secrets.NAME && password === secrets.PASS)
+  })
 })
+
+// CHECK LANGUAGE 
+app.get('/checkLang', (req, res) => {
+  console.log('checking for language');
+  if (typeof req.session.lang === 'undefined') {
+    req.session.lang = 'en';
+  }
+  res.json({
+    language: req.session.lang
+  })
+});
+
+// CHANGE LANGUAGE
+app.get('/changeLang', (req, res) => {
+  console.log('changing language');
+  console.log(req.session.lang);
+  if(req.session.lang === 'en') {
+    req.session.lang = 'pt'; 
+  } else {
+    req.session.lang = 'en';
+  }
+  res.json({
+    language: req.session.lang
+  })
+});
 
 server.listen(process.env.PORT || 8080, () => {
   console.log("Listening...");
