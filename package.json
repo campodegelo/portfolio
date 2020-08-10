@@ -2,6 +2,7 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -9,6 +10,8 @@
     "aws-sdk": "^2.729.0",
     "axios": "^0.19.2",
     "basic-auth": "^2.0.1",
+    "cookie-session": "^1.4.0",
+    "csurf": "^1.11.0",
     "express": "^4.17.1",
     "multer": "^1.4.2",
     "react": "^16.13.1",
