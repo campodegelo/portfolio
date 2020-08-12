@@ -204,6 +204,16 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
   }
 });
 
+// UPDATE ABOUT
+app.post('/updateAbout', (req, res) => {
+  const {first, last, description} = req.body;
+  console.log('first, last, description = ', first, last, description);
+
+  db.updateAbout(req.session.userId, first, last, description).then(data => {
+    res.json(data)
+  }).catch(err => console.log('err in updateAbout: ', err));
+});
+
 // CHECK LANGUAGE 
 app.get('/checkLang', (req, res) => {
   console.log('checking for language');

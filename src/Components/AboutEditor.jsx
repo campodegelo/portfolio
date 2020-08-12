@@ -10,7 +10,7 @@ const AboutEditor = () => {
     const [allowEdition, setAllowEdition] = useState(false);
     const [uploaderOnScreen, setUploaderOnScreen] = useState(false);
     const [values, handleChange] = useStatefulFields();
-    const [error, loading, handleSubmit] = useAuthSubmit("/register", values);
+    const [error, loading, handleSubmit] = useAuthSubmit("/updateAbout", values);
 
     const changeUrl = () => {
         (async () => {
@@ -41,6 +41,7 @@ const AboutEditor = () => {
                             className="form__input"
                             autoComplete="off"
                             placeholder={infoUser.first}
+                            // value={infoUser.first}
                             // readOnly={!allowEdition}
                             onChange={e => handleChange(e)}
                     />
@@ -51,6 +52,7 @@ const AboutEditor = () => {
                             className="form__input"
                             autoComplete="off"
                             placeholder={infoUser.last}
+                            // value={infoUser.last}
                             // readOnly={!allowEdition}
                             onChange={e => handleChange(e)}
                     />

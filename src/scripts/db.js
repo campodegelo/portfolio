@@ -57,3 +57,14 @@ exports.userExists = emailToCheck => {
       .then(({ rows }) => rows);
   };
 
+// update the user information
+exports.updateAbout = (id, first, last, description) => {
+    return db.query(`
+        UPDATE users
+        SET first=$2, last=$3, description=$4
+        WHERE id=$1
+        RETURNING id`,
+        [id, first, last, description]
+        ).then(({rows}) => rows);
+}
+
