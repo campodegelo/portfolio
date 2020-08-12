@@ -6,6 +6,8 @@ export function useAuthSubmit(url, values) {
   const [loading, setLoading] = useState();
 
   const handleSubmit = () => {
+    console.log('let me post some data');
+    console.log('values = ', values);
     setLoading(true);
     axios
       .post(url, values)

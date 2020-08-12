@@ -6,8 +6,8 @@ const About = (props) => {
         <Fragment>
             <div className="content__title">
                 <h1 className="heading-primary">
-                    <span className="heading-primary--main heading-primary--main--white">Fernanda</span>
-                    <span className="heading-primary--main heading-primary--main--black">Eisfeld</span>
+                    <span className="heading-primary--main heading-primary--white">Fernanda</span>
+                    <span className="heading-primary--main heading-primary--black">Eisfeld</span>
                     <span className="heading-primary--sub">Arquiteta</span>
                 </h1>
                 <img src="./profile.jpg" alt="Profile" className="about__profile"/>

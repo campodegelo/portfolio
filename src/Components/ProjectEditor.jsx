@@ -18,7 +18,9 @@ const ProjectEditor = () => {
                 
             })();
             
-            }
+        } else if (path === '/admin/newProject') {
+            setChange(false);
+        }
     },[path]); 
 
     return (
@@ -30,11 +32,24 @@ const ProjectEditor = () => {
             </div>
             
             {change && (
-                <div></div>
+                <div>
+                    <h1 className="heading-primary">
+                        <span className="heading-primary--sub heading-primary--black">Change Project</span>
+                    </h1>
+                </div>
             )}
 
             {!change && (
-                <div></div>
+                <div>
+                    <h1 className="heading-primary">
+                        <span className="heading-primary--sub heading-primary--black">New Project</span>
+                    </h1>
+                    
+                    <div className="form__group">
+                        
+                    </div>
+
+                </div>
             )}
         </Fragment>
     )

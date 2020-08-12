@@ -15,7 +15,7 @@
 
         padding: 1.5rem 2rem;
         border-radius: 2px;
-        background-color: rgba($color-white, .5);
+        background-color: rgba($color-black, .5);
         border: none;
         border-bottom: 3px solid transparent;
         display: block;
@@ -62,7 +62,7 @@
         text-align: left;
         display: block;
         transition: all .3s;
-        color: $color-white;
+        color: $color-black;
     }
 
     &__input:placeholder-shown + &__label {

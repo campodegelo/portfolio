@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {useStatefulFields} from '../context/useStatefulFields';
 import axios from 'axios';
 
-const Login = () => {
+const Login = (props) => {
     const [values, handleChange] = useStatefulFields();
     const [error, setError] = useState();
     // const [loading, setLoading] = useState();
@@ -18,6 +18,7 @@ const Login = () => {
             if (!data.success) {
               setError(true);
             } else {
+              props.logUser();
               window.location.replace("/admin");
             }
           })
@@ -60,6 +61,7 @@ const Login = () => {
                 <label htmlFor="password" className="form__label">Password</label>
             </div>
 
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
             <button className="btn btn--white btn--animated" onClick={() => handleSubmit()}>login</button>
         </div>
     )

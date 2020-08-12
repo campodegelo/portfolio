@@ -13,6 +13,7 @@ const db = require("./scripts/db");
 const axios = require("axios");
 const s3 = require("./scripts/s3.js");
 const { s3Url } = require("./config");
+const { compare, hash } = require("./scripts/bcrypt");
 
 // HANDLING SECRETS
 let secrets;
@@ -48,7 +49,9 @@ app.use(express.json());
 // CSURF MIDDLEWARE
 app.use(csurf());
 app.use(function(req, res, next) {
-  res.cookie("mytoken", req.csrfToken());
+  var token = req.csrfToken();
+  res.cookie("XSRF-TOKEN", token);
+  res.locals.csrfToken = token;
   next();
 });
 
@@ -81,15 +84,125 @@ axios.create({
 /***********************************************************************/
 // ROUTES
 // 
+// REGISTER - POST
+app.post("/register", (req, res) => {
+  const { first, last, email, password, confirm } = req.body;
+  console.log("Input to /register : ", req.body);
+  // check for empty inputs
+  if (!first || !last || !email || !password || !confirm) {
+    // console.log("empty input");
+    res.json({
+      success: false
+    });
+  } else {
+    // check if type pwd and the confirmation match
+    if (!(password === confirm)) {
+      res.json({
+        success: false
+      });
+    } else {
+      // check if email is already registered
+      db.userExists(email).then(data => {
+        if (data.length > 0) {
+          console.log('user exists already');
+          // user is already in the db
+          res.json({
+            success: false
+          });
+        } else {
+          // hash the password
+          hash(password).then(hashedPass => {
+            // console.log("password hashed");
+            db.insertNewUser(first, last, email, hashedPass)
+              .then(data => {
+                console.log('user has been inserted');
+                // set a cookie for the new user
+                req.session.userId = data[0].id;
+                res.json({
+                  success: true
+                });
+              })
+              .catch(err => console.log("err in insertNewUser : ", err));
+          });
+        }
+      });
+    }
+  }
+});
+
 // LOGIN
 app.post('/login', (req, res) => {
   console.log('login route reached');
 
-  const {email, password} = req.body;
-  res.json({
-      success: (email === secrets.NAME && password === secrets.PASS)
-  })
+  console.log('/login route reached');
+  
+  db.userExists(req.body.email).then(data => {
+    // if results array > 0, means the user was found in the db
+    if (data.length > 0) {
+      console.log('user found in the db');
+      
+      const userId = data[0].id;
+      compare(req.body.password, data[0].password).then(data => {
+        if (data) {
+          // password is correct and cookie will be created
+          console.log('password match');
+          
+          req.session.userId = userId;
+          // res.redirect('/games');
+          res.json({
+            success: true
+          });
+        } else {
+          // passwords do not match
+          res.json({
+            success: false
+          });
+        }
+      });
+    } else {
+      // user is not registered
+      res.json({
+        success: false
+      });
+    }
+  });
+
 })
+
+// GET INFO ABOUT USER
+app.get('/getUserInfo', (req, res) => {
+  console.log('getting info about user');
+
+  if (req.session && typeof req.session.userId !== "undefined") {
+    db.getUserInfo(req.session.userId)
+      .then(data => {
+        console.log("user data from getUserInfo: ", data);
+        res.json({
+          success: true,
+          data: data[0]});
+      })
+      .catch(err => console.log("err in getUserInfo: ", err));
+  } else {
+    console.log('user not found');
+    
+    res.json({ success: false });
+  }
+
+});
+
+// UPLOAD PICTURE TO AWS
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+  const imageUrl = s3Url + req.file.filename;
+  console.log('uploading picture from : ',imageUrl );
+  if (req.file) {
+      // Insert in the database
+      db.updatePicture(req.session.userId, imageUrl)
+          .then(data => {
+              res.json(data);
+          })
+          .catch(err => console.log("err in updatePicture: ", err));
+  }
+});
 
 // CHECK LANGUAGE 
 app.get('/checkLang', (req, res) => {
@@ -121,6 +234,8 @@ app.get('/fetchProjects', (req, res) => {
   console.log('fetching projects');
   
 });
+
+
 
 server.listen(process.env.PORT || 8080, () => {
   console.log("Listening...");

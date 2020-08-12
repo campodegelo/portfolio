@@ -14,8 +14,8 @@ body {
     padding: 5rem;
 
     &__title {
-        position: absolute;
-        left: 40%;
+        position: relative;
+        left: 50%;
         transform: translateX(-50%);
     }
 }
@@ -24,10 +24,19 @@ body {
     color: $color-black;
     text-transform: uppercase;
     backface-visibility: hidden;
-    margin-bottom: 6rem;
+    margin-bottom: 1rem;
     // border: 1px solid $color-black;
     // border-radius: 2px;
     
+    &--black {
+        color: $color-white;
+        background-color: $color-black;
+    }
+
+    &--white {
+        color: $color-black;
+        background-color: $color-white;
+    }
     
     &--main {
         display: block;
@@ -41,15 +50,6 @@ body {
         animation-iteration-count: 3;
         */
         
-        &--black {
-            color: $color-white;
-            background-color: $color-black;
-        }
-
-        &--white {
-            color: $color-black;
-            background-color: $color-white;
-        }
         
         @include respond(phone) {
             letter-spacing: 1rem;
