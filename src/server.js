@@ -154,6 +154,7 @@ app.post('/login', (req, res) => {
           });
         } else {
           // passwords do not match
+          console.log('password do not match');
           res.json({
             success: false
           });

@@ -1,16 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Uploader from './Uploader';
-import { useStatefulFields } from "../context/useStatefulFields";
+// import { useStatefulFields } from "../context/useStatefulFields";
 import { useAuthSubmit } from "../context/useAuthSubmit";
 // import Register from './Register';
 
 const AboutEditor = () => {
     const [infoUser, setInfoUser] = useState();
-    const [allowEdition, setAllowEdition] = useState(false);
+    // const [allowEdition, setAllowEdition] = useState(false);
     const [uploaderOnScreen, setUploaderOnScreen] = useState(false);
-    const [values, handleChange] = useStatefulFields();
-    const [error, loading, handleSubmit] = useAuthSubmit("/updateAbout", values);
+    // const [values, handleChange] = useStatefulFields();
+    // const [error, loading, handleSubmit] = useAuthSubmit("/updateAbout", values);
+
+    const handleChange = (e) => {
+        console.log('infoUser = ', infoUser);
+        e.persist();
+        setInfoUser(prevState => {
+            return {...prevState, [e.target.name]: e.target.value}
+        })
+
+    }
+    
+    const handleSubmit = () => {
+        console.log('gonna submit');
+
+        console.log('values = ', infoUser);
+        // setLoading(true);
+        (async () => {
+            const {data} = await axios.post('/updateAbout', infoUser);
+            console.log('data from /updateAbout = ', data);
+        })();
+    }
 
     const changeUrl = () => {
         (async () => {
@@ -20,6 +40,7 @@ const AboutEditor = () => {
             setInfoUser(data.data);
         })();
     }
+
 
     useEffect(() => {
         (async () => {
@@ -41,18 +62,18 @@ const AboutEditor = () => {
                             className="form__input"
                             autoComplete="off"
                             placeholder={infoUser.first}
-                            // value={infoUser.first}
+                            value={infoUser.first}
                             // readOnly={!allowEdition}
                             onChange={e => handleChange(e)}
                     />
                     
                     <input
                             type="text"
-                            name="last"
+                            name="inforUser.last"
                             className="form__input"
                             autoComplete="off"
                             placeholder={infoUser.last}
-                            // value={infoUser.last}
+                            value={infoUser.last}
                             // readOnly={!allowEdition}
                             onChange={e => handleChange(e)}
                     />
