@@ -246,6 +246,14 @@ app.get('/fetchProjects', (req, res) => {
   
 });
 
+// ADD A NEW PROJECT
+app.post('/addProject', (req, res) => {
+  const {name, description, location, area, yearStart, yearConclusion} = req.body;
+
+  db.addProject(name, description, location, area, yearStart, yearConclusion).then(data => {
+    console.log('data from addProject : ', data);
+  })
+});
 
 
 server.listen(process.env.PORT || 8080, () => {

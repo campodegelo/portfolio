@@ -68,3 +68,12 @@ exports.updateAbout = (id, first, last, description) => {
         ).then(({rows}) => rows);
 }
 
+// add a new project
+exports.addProject = (name, description, location, area, yearStart, yearConclusion) => {
+  return db.query(
+    `INSERT INTO projects (name, description, location, area, yearStart, yearConclusion)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING id`,
+    [name, description, location, area, yearStart, yearConclusion]
+  ).then(({rows}) => rows);
+}

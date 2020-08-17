@@ -1,7 +1,13 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import axios from 'axios';
+import { useAuthSubmit } from "../context/useAuthSubmit";
+import { useStatefulFields } from "../context/useStatefulFields";
+import Dropzone from './Dropzone';
 
 const ProjectEditor = () => {
+
+    const [values, handleChange] = useStatefulFields();
+    const [error, loading, handleSubmit] = useAuthSubmit("/addProject", values);
 
     const path = window.location.pathname;
     const [change, setChange] = useState(false);
@@ -46,8 +52,80 @@ const ProjectEditor = () => {
                     </h1>
                     
                     <div className="form__group">
-                        
+                        <input
+                            type="text"
+                            name="name"
+                            className="form__input"
+                            autoComplete="off"
+                            placeholder="Project Name"
+                            // readOnly={!allowEdition}
+                            onChange={e => handleChange(e)}
+                        />
                     </div>
+
+                    <div className="form__group">
+                        <textarea
+                            id="description"
+                            name="description"
+                            className="form__input"
+                            placeholder="Project Description"
+                            // readOnly={!allowEdition}
+                            onChange={e => handleChange(e)}
+                        />
+                    </div>
+
+                    <div className="form__group">
+                        <input
+                            type="text"
+                            name="location"
+                            className="form__input"
+                            autoComplete="off"
+                            placeholder="Location"
+                            // readOnly={!allowEdition}
+                            onChange={e => handleChange(e)}
+                        />
+                    </div>
+
+                    <div className="form__group">
+                        <input
+                            type="text"
+                            name="area"
+                            className="form__input"
+                            autoComplete="off"
+                            placeholder="Area"
+                            // readOnly={!allowEdition}
+                            onChange={e => handleChange(e)}
+                        />
+                    </div>
+
+                    <div className="form__group">
+                        <input
+                            type="text"
+                            name="yearStart"
+                            className="form__input"
+                            autoComplete="off"
+                            placeholder="Year of Start"
+                            // readOnly={!allowEdition}
+                            onChange={e => handleChange(e)}
+                        />
+                    </div>
+
+                    <div className="form__group">
+                        <input
+                            type="text"
+                            name="yearConclusion"
+                            className="form__input"
+                            autoComplete="off"
+                            placeholder="Year of Conclusion"
+                            // readOnly={!allowEdition}
+                            onChange={e => handleChange(e)}
+                        />
+                    </div>
+
+                    <Dropzone></Dropzone>
+
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                    <button className="btn btn--white btn--animated" onClick={() => handleSubmit()}>add project</button>
 
                 </div>
             )}

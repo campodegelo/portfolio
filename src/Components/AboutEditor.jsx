@@ -56,36 +56,43 @@ const AboutEditor = () => {
             {/* <Register></Register> */}
             {infoUser && (
                 <div>
-                    <input
-                            type="text"
-                            name="first"
-                            className="form__input"
-                            autoComplete="off"
-                            placeholder={infoUser.first}
-                            value={infoUser.first}
-                            // readOnly={!allowEdition}
-                            onChange={e => handleChange(e)}
-                    />
+                    <div className="form__group">
+                        <input
+                                type="text"
+                                name="first"
+                                className="form__input"
+                                autoComplete="off"
+                                placeholder={infoUser.first}
+                                value={infoUser.first}
+                                // readOnly={!allowEdition}
+                                onChange={e => handleChange(e)}
+                        />
+                    </div>
                     
-                    <input
-                            type="text"
-                            name="inforUser.last"
-                            className="form__input"
-                            autoComplete="off"
-                            placeholder={infoUser.last}
-                            value={infoUser.last}
-                            // readOnly={!allowEdition}
-                            onChange={e => handleChange(e)}
-                    />
+                    <div className="form__group">
+                        <input
+                                type="text"
+                                name="inforUser.last"
+                                className="form__input"
+                                autoComplete="off"
+                                placeholder={infoUser.last}
+                                value={infoUser.last}
+                                // readOnly={!allowEdition}
+                                onChange={e => handleChange(e)}
+                        />
+                    </div>
 
-                    <textarea
-                        name="description"
-                        id="bio-text"
-                        rows="10"
-                        cols="50"
-                        value={infoUser.description}
-                        onChange={e => handleChange(e)}
-                    ></textarea>
+                    <div className="form__group">
+                        <textarea
+                            name="description"
+                            id="bio-text"
+                            rows="10"
+                            cols="50"
+                            value={infoUser.description}
+                            onChange={e => handleChange(e)}
+                        ></textarea>
+                    </div>
+
 
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
                     <button className="btn btn--white btn--animated" onClick={() => handleSubmit()}>update</button>

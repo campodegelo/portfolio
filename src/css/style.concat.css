@@ -545,15 +545,21 @@ body {
   width: 80%;
   padding: 5rem; }
   .content__title {
-    position: absolute;
-    left: 40%;
+    position: relative;
+    left: 50%;
     transform: translateX(-50%); }
 
 .heading-primary {
   color: #000;
   text-transform: uppercase;
   backface-visibility: hidden;
-  margin-bottom: 6rem; }
+  margin-bottom: 1rem; }
+  .heading-primary--black {
+    color: #fff;
+    background-color: #000; }
+  .heading-primary--white {
+    color: #000;
+    background-color: #fff; }
   .heading-primary--main {
     display: block;
     font-size: 5rem;
@@ -565,12 +571,6 @@ body {
     /*animation-delay: 2s;
         animation-iteration-count: 3;
         */ }
-    .heading-primary--main--black {
-      color: #fff;
-      background-color: #000; }
-    .heading-primary--main--white {
-      color: #000;
-      background-color: #fff; }
     @media only screen and (max-width: 37.5em) {
       .heading-primary--main {
         letter-spacing: 1rem;
@@ -651,7 +651,13 @@ body {
 
 .admin__btn {
   text-decoration: none;
-  color: #000; }
+  color: #fff;
+  background-color: #000;
+  font-size: 1.2rem;
+  padding: 1rem;
+  margin: 2rem;
+  display: inline-block;
+  border-radius: 4px; }
 
 .bg-video {
   position: absolute;
@@ -903,6 +909,27 @@ body {
   .composition:hover .composition__photo:not(:hover) {
     transform: scale(0.95); }
 
+.drop__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 4px dashed #4aa1f3; }
+
+.drop__upload-icon {
+  width: 50px;
+  height: 50px;
+  background: url(/upload.png) no-repeat center center;
+  background-size: 100%;
+  text-align: center;
+  margin: 0 auto;
+  padding-top: 30px; }
+
+.drop__message {
+  text-align: center;
+  color: #4aa1f3;
+  font-size: 2rem; }
+
 .feature-box {
   background-color: rgba(255, 255, 255, 0.8);
   font-size: 1.5rem;
@@ -939,7 +966,7 @@ body {
     color: #000;
     padding: 1.5rem 2rem;
     border-radius: 2px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     border: none;
     border-bottom: 3px solid transparent;
     display: block;
@@ -973,7 +1000,7 @@ body {
     text-align: left;
     display: block;
     transition: all .3s;
-    color: #fff; }
+    color: #000; }
   .form__input:placeholder-shown + .form__label {
     opacity: 0;
     visibility: hidden;

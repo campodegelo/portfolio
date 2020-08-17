@@ -6,7 +6,7 @@ CREATE TABLE projects(
     description TEXT,
     location VARCHAR,
     area VARCHAR,
-    yearProject VARCHAR,
+    yearStart VARCHAR,
     yearConclusion VARCHAR,
     image VARCHAR,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
