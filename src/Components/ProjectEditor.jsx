@@ -7,10 +7,38 @@ import Dropzone from './Dropzone';
 const ProjectEditor = () => {
 
     const [values, handleChange] = useStatefulFields();
-    const [error, loading, handleSubmit] = useAuthSubmit("/addProject", values);
-
+    const [error, setError] = useState();
+    const [loading, setLoading] = useState();
+    const [currentProject, setCurrentProject] = useState();
+    // const [error, loading, handleSubmit] = useAuthSubmit("/addProject", values);
     const path = window.location.pathname;
+
     const [change, setChange] = useState(false);
+    const [added, setAdded] = useState(false);
+
+    const handleSubmit = () => {
+        console.log('values = ', values);
+        setLoading(true);
+        axios.post('/addProject', values)
+        .then(({ data }) => {
+            setLoading(false);
+            console.log(data);
+            if (!data.success) {
+                setError(true);
+            } else {
+                console.log('deu certo');
+                console.log('data = ', data.data[0]);
+                setCurrentProject(data.data[0]);
+                setAdded(true);
+            }
+        })
+        .catch(err => {
+            setLoading(false);
+            console.log("error in submit: ", err);
+            setError(true);
+        });
+    }
+
 
 
     //fetch all projects
@@ -38,14 +66,14 @@ const ProjectEditor = () => {
             </div>
             
             {change && (
-                <div>
+                <div className="content__title">
                     <h1 className="heading-primary">
                         <span className="heading-primary--sub heading-primary--black">Change Project</span>
                     </h1>
                 </div>
             )}
 
-            {!change && (
+            {!change && !added && (
                 <div>
                     <h1 className="heading-primary">
                         <span className="heading-primary--sub heading-primary--black">New Project</span>
@@ -122,13 +150,26 @@ const ProjectEditor = () => {
                         />
                     </div>
 
-                    <Dropzone></Dropzone>
 
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
-                    <button className="btn btn--white btn--animated" onClick={() => handleSubmit()}>add project</button>
+                    <button className="btn btn--black btn--animated" 
+                        onClick={() => handleSubmit()}>add project
+                    </button>
 
                 </div>
             )}
+
+            {added && (
+                <div className="projects__uploader">
+                    <h1 className="heading-secondary">{currentProject.name}</h1>
+                    <Dropzone
+                        handleSubmit={() => setAdded(false)}
+                        currentProject={currentProject}
+                    ></Dropzone>
+                </div>
+
+            )}
+
         </Fragment>
     )
 }

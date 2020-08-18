@@ -252,8 +252,20 @@ app.post('/addProject', (req, res) => {
 
   db.addProject(name, description, location, area, yearStart, yearConclusion).then(data => {
     console.log('data from addProject : ', data);
-  })
+
+    res.json({
+      success: true,
+      data
+    })
+
+  }).catch(err => res.json({success: false}));
 });
+
+// INSERT THE URL OF THE UPLOADED IMAGES TO THE PROJECT
+app.post('/addUrlProject', (req, res) => {
+  const {id, url} = req.body;
+  console.log('id e url = ', id , url);
+})
 
 
 server.listen(process.env.PORT || 8080, () => {

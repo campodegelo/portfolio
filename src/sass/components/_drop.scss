@@ -15,7 +15,7 @@
         margin: 0;
         // width: 800px;
         // height: 200px;
-        border: 4px dashed #4aa1f3;
+        border: 4px dashed $color-dragndrop;
     }
     
     &__upload-icon {
@@ -30,7 +30,7 @@
 
     &__message {
         text-align: center;
-        color: #4aa1f3;
+        color: $color-dragndrop;
         font-size: 2rem;
     }
 
@@ -39,6 +39,21 @@
         &-display-container {
             // position: fixed;
             // width: 800px;
+        }
+
+        &-input {
+            display: none;
+        }
+
+        &-upload-btn {
+            color: $color-white;
+            text-transform: uppercase;
+            outline: none;
+            background-color: $color-dragndrop;
+            font-weight: bold;
+            padding: 8px 15px;
+            margin-bottom: 5px;
+            cursor: pointer;
         }
 
         &-status-bar{
@@ -74,7 +89,7 @@
             display: inline-block;
             vertical-align:top;
             margin-left: 50px;
-            color: #4aa1f3;
+            color: $color-dragndrop;
         }
         
         &-error {

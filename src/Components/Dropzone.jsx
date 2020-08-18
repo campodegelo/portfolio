@@ -1,11 +1,18 @@
-import React, { useState, Fragment, useEffect, useRef } from 'react'
+import React, { useState, Fragment, useEffect, useRef } from 'react';
+import axios from 'axios';
 
-const Dropzone = () => {
+const Dropzone = (props) => {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [validFiles, setValidFiles] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
+    const [unsupportedFiles, setUnsupportedFiles] = useState([]);
+    
     const modalImageRef = useRef();
     const modalRef = useRef();
+    const fileInputRef = useRef();
+    const uploadModalRef = useRef();
+    const uploadRef = useRef();
+    const progressRef = useRef();
 
     useEffect(() => {
         let filteredArray = selectedFiles.reduce((file, current) => {
@@ -43,6 +50,7 @@ const Dropzone = () => {
                 files[i]['invalid'] = true;
                 // add to the same array so we can display the name of the file
                 setSelectedFiles(prevArray => [...prevArray, files[i]]);
+                setUnsupportedFiles(prevArray => [...prevArray, files[i]]);
                 // set error message
                 setErrorMessage('File type not permitted');
             }
@@ -89,6 +97,14 @@ const Dropzone = () => {
         selectedFiles.splice(selectedFileIndex, 1);
         // update selectedFiles array
         setSelectedFiles([...selectedFiles]);
+
+        // each invalid file dropped by the user will be added to the array
+        const unsupportedFileIndex = unsupportedFiles.findIndex(e => e.name === name);
+        if (unsupportedFileIndex !== -1) {
+            unsupportedFiles.splice(unsupportedFileIndex, 1);
+            // update unsupportedFiles array
+            setUnsupportedFiles([...unsupportedFiles]);
+        }
     }
 
     const openImageModal = (file) => {
@@ -105,6 +121,66 @@ const Dropzone = () => {
         modalImageRef.current.style.backgroundImage = 'none';
     }
 
+    const fileInputClicked = () => {
+        fileInputRef.current.click();
+    }
+
+    const filesSelected = () => {
+        if (fileInputRef.current.files.length) {
+            handleFiles(fileInputRef.current.files);
+        }
+    }
+
+    const uploadFiles = () => {
+        uploadModalRef.current.style.display = 'block';
+        uploadRef.current.innerHTML = 'File(s) Uploading...';
+        for (let i = 0; i < validFiles.length; i++) {
+            const formData = new FormData();
+            formData.append('file', validFiles[i]);
+            axios.post("/upload", formData, {
+                onUploadProgress: (progressEvent) => {
+                    const uploadPercentage = Math.floor((progressEvent.loaded / progressEvent.total) * 100);
+                    // progressRef.current.innerHTML = `${uploadPercentage}%`;
+                    progressRef.current.style.width = `${uploadPercentage}%`;
+                    if (uploadPercentage === 100) {
+                        uploadRef.current.innerHTML = 'File(s) Uploaded';
+                        validFiles.length = 0;
+                        setValidFiles([...validFiles]);
+                        setSelectedFiles([...validFiles]);
+                        setUnsupportedFiles([...validFiles]);
+                    }
+                }
+            }).then(({ data }) => {
+                console.log("data from upload : ", data);
+                // saves the url of the uploaded image into the db
+                console.log('data.url = ', data[0].url);
+                console.log('current project = ', props.currentProject);
+                axios.post('/addUrlProject', {
+                    url: data[0].url,
+                    id: props.currentProject
+                }).then(({data}) => {
+                    console.log('data from /addUrlProject = ', data);
+                }).catch(() => {
+                    // If error, display a message on the upload modal
+                    uploadRef.current.innerHTML = `<span class="error">Error Uploading File(s)</span>`;
+                    // set progress bar background color to red
+                    progressRef.current.style.backgroundColor = 'red';
+                })
+                // this.props.setImageUrl(data[0].url);
+            }).catch(() => {
+                // If error, display a message on the upload modal
+                uploadRef.current.innerHTML = `<span class="error">Error Uploading File(s)</span>`;
+                // set progress bar background color to red
+                progressRef.current.style.backgroundColor = 'red';
+            });
+        }
+        props.handleSubmit();
+    }
+
+    const closeUploadModal = () => {
+        uploadModalRef.current.style.display = 'none';
+    }
+
 
     return (
         <Fragment>
@@ -113,11 +189,21 @@ const Dropzone = () => {
                 onDragEnter={dragEnter}
                 onDragLeave={dragLeave}
                 onDrop={fileDrop}
+                onClick={fileInputClicked}
+
             >
                 <div className="drop__message">
                     <div className="drop__upload-icon"></div>
                     Drag & Drop files here or click to upload
                 </div>
+
+                <input
+                    ref={fileInputRef}
+                    className="drop__file-input"
+                    type="file"
+                    multiple
+                    onChange={filesSelected}
+                />
 
             </div>
 
@@ -125,6 +211,7 @@ const Dropzone = () => {
                 {validFiles.map((data, i) =>
                     <div className="drop__file-status-bar" key={i}>
                         <div onClick={!data.invalid ? () => openImageModal(data) : () => removeFile(data.name)}>
+
                             <div className="drop__file-type-logo"></div>
                             <div className="drop__file-type">{fileType(data.name)}</div>
                             <span className={`drop__file-name ${data.invalid ? 'file-error' : ''}`}>{data.name}</span>
@@ -136,15 +223,34 @@ const Dropzone = () => {
                         </div>
                         <div className="drop__file-remove"
                             onClick={() => removeFile(data.name)}
-                        >X</div>
+                            >X</div>
                     </div>
                 )}
             </div>
 
+                {unsupportedFiles.length === 0 && validFiles.length ? 
+                    <button className="drop__file-upload-btn" 
+                        onClick={() => uploadFiles()}>Upload Files
+                    </button> : ''
+                }
+
+                {unsupportedFiles.length ? <p>Please remove all unsupported files.</p> : ''}
+
             <div className="modal" ref={modalRef}>
-                <div className="overlay"></div>
-                <span className="close" onClick={(() => closeModal())}>X</span>
-                <div className="modal-image" ref={modalImageRef}></div>
+                <div className="modal__overlay"></div>
+                <span className="modal__close" onClick={(() => closeModal())}>X</span>
+                <div className="modal__image" ref={modalImageRef}></div>
+            </div>
+
+            <div className="modal__upload" ref={uploadModalRef}>
+                <div className="modal__overlay"></div>
+                <div className="modal__close" onClick={(() => closeUploadModal())}>X</div>
+                <div className="progress__container">
+                    <span ref={uploadRef}></span>
+                    <div className="progress">
+                        <div className="progress__bar" ref={progressRef}></div>
+                    </div>
+                </div>
             </div>
 
         </Fragment>

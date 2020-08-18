@@ -6,7 +6,7 @@ CREATE TABLE publications(
     description TEXT,
     location VARCHAR,
     area VARCHAR,
-    yearPublication VARCHAR,
+    year_publication VARCHAR,
     image VARCHAR,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
