@@ -141,9 +141,9 @@ const Dropzone = (props) => {
                 onUploadProgress: (progressEvent) => {
                     const uploadPercentage = Math.floor((progressEvent.loaded / progressEvent.total) * 100);
                     // progressRef.current.innerHTML = `${uploadPercentage}%`;
-                    progressRef.current.style.width = `${uploadPercentage}%`;
+                    // progressRef.current.style.width = `${uploadPercentage}%`;
                     if (uploadPercentage === 100) {
-                        uploadRef.current.innerHTML = 'File(s) Uploaded';
+                        // uploadRef.current.innerHTML = 'File(s) Uploaded';
                         validFiles.length = 0;
                         setValidFiles([...validFiles]);
                         setSelectedFiles([...validFiles]);
@@ -153,11 +153,11 @@ const Dropzone = (props) => {
             }).then(({ data }) => {
                 console.log("data from upload : ", data);
                 // saves the url of the uploaded image into the db
-                console.log('data.url = ', data[0].url);
-                console.log('current project = ', props.currentProject);
+                console.log('data.url = ', data[0].image);
+                console.log('current project = ', props.currentProject.id);
                 axios.post('/addUrlProject', {
-                    url: data[0].url,
-                    id: props.currentProject
+                    url: data[0].image,
+                    id: props.currentProject.id
                 }).then(({data}) => {
                     console.log('data from /addUrlProject = ', data);
                 }).catch(() => {

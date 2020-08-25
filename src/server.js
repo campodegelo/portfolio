@@ -258,13 +258,24 @@ app.post('/addProject', (req, res) => {
       data
     })
 
-  }).catch(err => res.json({success: false}));
+  }).catch(err => {
+    console.log('err in addProject: ', err);
+    res.json({success: false})
+  });
 });
 
 // INSERT THE URL OF THE UPLOADED IMAGES TO THE PROJECT
 app.post('/addUrlProject', (req, res) => {
   const {id, url} = req.body;
   console.log('id e url = ', id , url);
+  db.addUrlProject(id, url).then(data => {
+    console.log('data from addUrlProject: ', data);
+
+    res.json({success: true});
+  }).catch(err => {
+    console.log('err in addUrlProject: ', err);
+    res.json({success: false})
+  });
 })
 
 

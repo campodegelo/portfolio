@@ -14,7 +14,7 @@ exports.userExists = emailToCheck => {
       .then(({ rows }) => rows);
 };
 
-// UPDATE PICTURE
+// UPDATE PROFILE PICTURE
 exports.updatePicture = (id, imageUrl) => {
     return db
         .query(
@@ -75,5 +75,15 @@ exports.addProject = (name, description, location, area, yearStart, yearConclusi
     VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING id, name`,
     [name, description, location, area, yearStart, yearConclusion]
+  ).then(({rows}) => rows);
+}
+
+// INSERT PROJECT IMAGES
+exports.addUrlProject = (id, url) => {
+  return db.query(`
+    INSERT INTO images (id_project, image)
+    VALUES ($1, $2)
+    RETURNING id
+  `, [id, url]
   ).then(({rows}) => rows);
 }
