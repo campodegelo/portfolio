@@ -4,5 +4,6 @@ CREATE TABLE images(
     id SERIAL PRIMARY KEY,
     id_project INT REFERENCES projects(id) NOT NULL,
     image VARCHAR,
+    main BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

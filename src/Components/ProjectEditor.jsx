@@ -49,6 +49,7 @@ const ProjectEditor = () => {
 
             (async () => {
                 const {data} = await axios.get('/fetchProjects');
+                console.log('data from fectchProjects: ', data);
                 
             })();
             

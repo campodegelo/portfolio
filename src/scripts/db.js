@@ -68,7 +68,7 @@ exports.updateAbout = (id, first, last, description) => {
         ).then(({rows}) => rows);
 }
 
-// add a new project
+// ADD A NEW PROJECT
 exports.addProject = (name, description, location, area, yearStart, yearConclusion) => {
   return db.query(
     `INSERT INTO projects (name, description, location, area, year_start, year_conclusion)
@@ -77,6 +77,16 @@ exports.addProject = (name, description, location, area, yearStart, yearConclusi
     [name, description, location, area, yearStart, yearConclusion]
   ).then(({rows}) => rows);
 }
+
+// FETCH ALL PROJECTS
+exports.selectAllProjects = () => {
+  return db.query(
+    `SELECT projects.id AS id, name, description, location, area, year_start, year_conclusion, image, main
+    FROM projects
+    LEFT JOIN images
+    ON (projects.id = id_project)`
+  ).then(({rows}) => rows);
+};
 
 // INSERT PROJECT IMAGES
 exports.addUrlProject = (id, url) => {

@@ -243,6 +243,19 @@ app.get('/changeLang', (req, res) => {
 // FETCH EXISTING PROJECTS
 app.get('/fetchProjects', (req, res) => {
   console.log('fetching projects');
+  db.selectAllProjects()
+  .then(data => {
+    console.log('data from selectAllProjects: ', data);
+    res.json({
+      success: true,
+      data
+    });
+  }).catch(err => {
+    console.log('err in selectAllProjecst: ', err);
+    res.json({
+      success: false
+    })
+  })
   
 });
 
