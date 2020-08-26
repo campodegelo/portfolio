@@ -1,11 +1,52 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect, Fragment} from 'react'
+import axios from 'axios';
 
 
 const Projects = () => {
+    const [projects, setProjects] = useState();
+    useEffect(() => {
+        (async() => {
+            const {data} = await axios.get('/fetchProjects');
+            console.log('data from fectchProjects: ', data);
+
+            setProjects(data.results);
+
+        })();
+    },[]);
+
+    console.log('projects = ', projects);
+
     return (
-        <div className="projects__container">
-            
-        </div>
+        <Fragment>
+            {projects && (
+                <div className="project__container">
+                    {projects.map(p => (
+                        <div className="project__item" key={p.id}>
+                            <div className="overlay">
+                                <div className="project__title">{p.name}</div>
+                            </div>
+                            {p.images && (
+                                <div className="project__content">
+                                    {p.images.map(mainImg => (
+                                        <div className="project__image" key={mainImg.image}>
+                                            {!mainImg.main && (
+                                                <img src={mainImg.image} alt={p.name} className="project__image"/>
+                                            )}
+
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            {!p.images && (
+                                <div className="project__image">
+                                    <img src="/no-image.png" alt="no project img" className="project__image"/>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </Fragment>
     )
 }
 

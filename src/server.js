@@ -246,17 +246,36 @@ app.get('/fetchProjects', (req, res) => {
   db.selectAllProjects()
   .then(data => {
     console.log('data from selectAllProjects: ', data);
-    res.json({
-      success: true,
-      data
-    });
+      db.findImagesProject().then(imgs => {
+        console.log('results from find images: ', imgs);
+
+        let results = [];
+
+            for(let j = 0; j<data.length;j++) {
+                results.push(data[j]);
+                for (let i = 0; i<imgs.length; i++){
+                    if(data[j].id === imgs[i].id) {
+                        if(results[j].images === undefined){
+                            results[j].images = [];
+                        }
+                        results[j].images.push(imgs[i]);
+                    }
+                }
+            }
+
+
+        res.json({
+          success: true,
+          results
+        });
+      }).catch(err => console.log('err in findImagesProject'))
+    console.log('data complete from fetch projects = ', data);
   }).catch(err => {
     console.log('err in selectAllProjecst: ', err);
     res.json({
       success: false
     })
   })
-  
 });
 
 // ADD A NEW PROJECT

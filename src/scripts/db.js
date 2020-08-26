@@ -81,12 +81,18 @@ exports.addProject = (name, description, location, area, yearStart, yearConclusi
 // FETCH ALL PROJECTS
 exports.selectAllProjects = () => {
   return db.query(
-    `SELECT projects.id AS id, name, description, location, area, year_start, year_conclusion, image, main
-    FROM projects
-    LEFT JOIN images
-    ON (projects.id = id_project)`
+    `SELECT *
+    FROM projects`
   ).then(({rows}) => rows);
 };
+
+// FETCH IMAGES FROM PROJECTS
+exports.findImagesProject = () => {
+  return db.query(
+    `SELECT id_project as id, image, main
+    FROM images`
+  ).then(({rows})=>rows);
+}
 
 // INSERT PROJECT IMAGES
 exports.addUrlProject = (id, url) => {
