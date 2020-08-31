@@ -3,66 +3,74 @@
     &__container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: space-around;
+    }
+
+    &__title {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem;
+        font-weight: 800;
+        color: white;
+        visibility: hidden;
+        cursor: pointer;
+        z-index: 3;
     }
 
     &__item {
-        margin: 2rem;
         width: 45%;
-        height: 40vh;
         position: relative;
+
+        &:not(:last-child) {
+            margin-bottom: 5rem;
+        }
         
-        & .overlay {
+        & .overlay,
+        & .overlay::before,
+        & .overlay::after {
             position: absolute;
-            display: none;
+            cursor: pointer;
             z-index: 2;
             width: 100%;
             height: 40vh;
-            opacity: 50%;
-            background-color: $color-black;
-            transition: .3s linear;
+             transition: .3s linear;
         }
 
-        //https://codepen.io/nxworld/pen/MvJQQy
+        & .overlay {
+            opacity: 0;
+            visibility: hidden;
+        }
 
-        .overlay08,
-        .overlay08::before,
-        .overlay08::after {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 2;
-        width: 100%;
-        height: 100%;
-        transition: .3s linear;
-        }
-        .overlay08 {
-        opacity: 0;
-        visibility: hidden;
-        }
-        .overlay08::before,
-        .overlay08::after {
+        & .overlay::before,
+        & .overlay::after {
         content: '';
-        background: rgba(0, 0, 0, .45);
+        background: rgba(0, 0, 0, .5);
         }
-        .overlay08::before {
-        transform: translateY(-100%);
+
+        & .overlay::before {
+            transform: translateY(-20%);
         }
-        .overlay08::after {
-        transform: translateY(100%);
-        }
-        .overlay08.is-open {
-        opacity: 1;
-        visibility: visible;
-        }
-        .overlay08.is-open::before,
-        .overlay08.is-open::after {
-        transform: translateY(0);
+
+        & .overlay::after {
+            transform: translateY(20%);
         }
 
         &:hover .overlay {
-            display: block;
+            opacity: 1;
+            visibility: visible;
         }
+
+        &:hover .overlay::before,
+        &:hover .overlay::after {
+            transform: translateY(0);
+        }
+
+        &:hover .project__title {
+            visibility: visible;
+        }
+        
     }
 
     &__image {

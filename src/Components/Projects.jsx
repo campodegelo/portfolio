@@ -23,17 +23,19 @@ const Projects = () => {
                     {projects.map(p => (
                         <div className="project__item" key={p.id}>
                             <div className="overlay">
-                                <div className="project__title">{p.name}</div>
                             </div>
+                            <div className="project__title">{p.name}</div>
                             {p.images && (
                                 <div className="project__content">
                                     {p.images.map(mainImg => (
-                                        <div className="project__image" key={mainImg.image}>
-                                            {!mainImg.main && (
-                                                <img src={mainImg.image} alt={p.name} className="project__image"/>
+                                        <Fragment
+                                            key={mainImg.image}>
+                                            {mainImg.main && (
+                                                <img src={mainImg.image} alt={p.name} 
+                                                className="project__image"/>
                                             )}
 
-                                        </div>
+                                        </Fragment>
                                     ))}
                                 </div>
                             )}

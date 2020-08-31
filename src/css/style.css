@@ -846,51 +846,53 @@ body {
 .project__container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; }
+  justify-content: space-around; }
+
+.project__title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  font-weight: 800;
+  color: white;
+  visibility: hidden;
+  cursor: pointer;
+  z-index: 3; }
 
 .project__item {
-  margin: 2rem;
   width: 45%;
-  height: 40vh;
   position: relative; }
-  .project__item .overlay {
+  .project__item:not(:last-child) {
+    margin-bottom: 5rem; }
+  .project__item .overlay,
+  .project__item .overlay::before,
+  .project__item .overlay::after {
     position: absolute;
-    display: none;
+    cursor: pointer;
     z-index: 2;
     width: 100%;
     height: 40vh;
-    opacity: 50%;
-    background-color: #000;
     transition: .3s linear; }
-  .project__item .overlay08,
-  .project__item .overlay08::before,
-  .project__item .overlay08::after {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    transition: .3s linear; }
-  .project__item .overlay08 {
+  .project__item .overlay {
     opacity: 0;
     visibility: hidden; }
-  .project__item .overlay08::before,
-  .project__item .overlay08::after {
+  .project__item .overlay::before,
+  .project__item .overlay::after {
     content: '';
-    background: rgba(0, 0, 0, 0.45); }
-  .project__item .overlay08::before {
-    transform: translateY(-100%); }
-  .project__item .overlay08::after {
-    transform: translateY(100%); }
-  .project__item .overlay08.is-open {
+    background: rgba(0, 0, 0, 0.5); }
+  .project__item .overlay::before {
+    transform: translateY(-20%); }
+  .project__item .overlay::after {
+    transform: translateY(20%); }
+  .project__item:hover .overlay {
     opacity: 1;
     visibility: visible; }
-  .project__item .overlay08.is-open::before,
-  .project__item .overlay08.is-open::after {
+  .project__item:hover .overlay::before,
+  .project__item:hover .overlay::after {
     transform: translateY(0); }
-  .project__item:hover .overlay {
-    display: block; }
+  .project__item:hover .project__title {
+    visibility: visible; }
 
 .project__image {
   height: 40vh;

@@ -15,6 +15,7 @@ const ProjectEditor = () => {
 
     const [change, setChange] = useState(false);
     const [added, setAdded] = useState(false);
+    const [main, setMain] = useState(false);
 
     const handleSubmit = () => {
         console.log('values = ', values);
@@ -74,7 +75,7 @@ const ProjectEditor = () => {
                 </div>
             )}
 
-            {!change && !added && (
+            {!change && !added && !main && (
                 <div>
                     <h1 className="heading-primary">
                         <span className="heading-primary--sub heading-primary--black">New Project</span>
@@ -161,14 +162,23 @@ const ProjectEditor = () => {
             )}
 
             {added && (
-                <div className="projects__uploader">
+                <div className="project__uploader">
                     <h1 className="heading-secondary">{currentProject.name}</h1>
                     <Dropzone
-                        handleSubmit={() => setAdded(false)}
+                        handleSubmit={() => {
+                            setAdded(false);
+                            setMain(true);
+                        }}
                         currentProject={currentProject}
                     ></Dropzone>
                 </div>
 
+            )}
+
+            {main && (
+                <div className="project__image--container">
+                    
+                </div>
             )}
 
         </Fragment>
